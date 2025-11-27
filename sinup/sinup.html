@@ -1,0 +1,198 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - National Park</title>
+    <link rel="stylesheet" href="sinup.css">
+    <script src="sinup.js"></script>
+    <!-- <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('sinup2.jpg');
+            backdrop-filter: blur(4px);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-box {
+            background: #cbc6c6;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
+            width: 380px;
+            text-align: center;
+        }
+
+        .signup-box h2 {
+            margin-bottom: 20px;
+            color: #145a32;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            background: #145a32;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            background: #0f3621;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #145a32;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Success Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style> -->
+</head>
+
+<body>
+
+    <div class="signup-box">
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            </div>
+            <!-- <div class="input-group">
+                <label>Select National Park</label>
+                <select id="park" required>
+                    <option value="">-- Choose a Park --</option>
+                    <option>Jim Corbett National Park</option>
+                    <option>Ranthambore National Park</option>
+                    <option>Kaziranga National Park</option>
+                    <option>Gir National Park</option>
+                    <option>Sundarbans National Park</option>
+                </select>
+            </div> -->
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="../login/login.php">Login</a>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h3>Registration Successful!</h3>
+            <p>Welcome to our National Park Community 🌿</p>
+        </div>
+    </div>
+
+    <!-- <script>
+        const form = document.getElementById("signupForm");
+        const popup = document.getElementById("popup");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            // Show success popup
+            popup.style.display = "flex";
+
+            setTimeout(() => {
+                popup.style.display = "none";
+                form.reset();
+            }, 2500);
+        });
+    </script> -->
+
+</body>
+
+</html> -->

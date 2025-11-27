@@ -1,0 +1,177 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f8f8ef;
+  overflow-x: hidden;
+}
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.nav-links a:hover {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.reviews-section h1 {
+  background: linear-gradient(135deg, #a873a1 0%, #27cdd6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2rem;
+}
+.reviews-section {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+#searchBar {
+  width: 98%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 2px solid #0dd217;
+}
+
+.review-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.review-rating {
+  color: gold;
+}
+
+.review-footer {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.review-footer span {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.review-footer span:hover {
+  transform: scale(1.1);
+}
+
+.submit-review {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.submit-review button {
+  padding: 10px 20px;
+  background: #3c8c5b;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.submit-review a {
+  text-decoration: none;
+}
+
+footer {
+  background: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 1px solid #ddd;
+}
+
+footer a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #555;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.social-link:hover {
+  color: green;
+}
+
+.social-icon:hover {
+  font-size: large;
+}
+
+.social-icon {
+  padding-top: 20px;
+  transition: all 0.2s ease;
+}

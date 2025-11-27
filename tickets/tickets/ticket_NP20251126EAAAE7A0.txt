@@ -1,0 +1,13 @@
+National Park Ticket
+Ticket ID: NP20251126EAAAE7A0
+Booking ID: 1
+Park: Kaziranga
+Visit Date: 2025-11-29
+Time Slot: Morning
+Entry Gate: Main Gate
+Number of Tickets: 1
+Visitor(s): aman
+ID Proof: 123244576765
+Payment Method: UPI
+Payment Status: paid
+Booked At: 2025-11-26 11:55:25
