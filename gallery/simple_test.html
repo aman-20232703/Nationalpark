@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .park {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Simple Parks Test</h1>
+    <button onclick="loadParks()">Test parks_api.php</button>
+    <button onclick="testDirect()">Test test_direct.php</button>
+    <div id="output">Click a button to test...</div>
+
+    <script>
+        async function testDirect() {
+            const output = document.getElementById('output');
+            try {
+                output.innerHTML = '<p>Testing test_direct.php...</p>';
+                console.log('Testing test_direct.php...');
+                const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+                const apiUrl = currentPath + '/test_direct.php';
+                console.log('test_direct URL:', apiUrl);
+                const response = await fetch(apiUrl);
+                const text = await response.text();
+                console.log('Response:', text);
+                const data = JSON.parse(text);
+                output.innerHTML = '<p style="color: green;">✓ test_direct.php is working! ' + data.message + '</p>';
+            } catch (error) {
+                console.error('test_direct.php error:', error);
+                output.innerHTML = '<p style="color: red;">✗ test_direct.php Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function loadParks() {
+            const output = document.getElementById('output');
+            try {
+                console.log('Fetching from parks_api.php...');
+                const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+                const apiUrl = currentPath + '/parks_api.php';
+                console.log('parks_api URL:', apiUrl);
+                const response = await fetch(apiUrl);
+                console.log('Response:', response.status);
+                console.log('Content-Type:', response.headers.get('content-type'));
+
+                // Get the raw text first to see what we're actually receiving
+                const text = await response.text();
+                console.log('Raw response (first 500 chars):', text.substring(0, 500));
+
+                // Try to parse as JSON
+                let data;
+                try {
+                    data = JSON.parse(text);
+                    console.log('Data:', data);
+                } catch (jsonError) {
+                    console.error('JSON Parse Error:', jsonError);
+                    output.innerHTML = `
+                        <p style="color: red;">Error: Response is not valid JSON</p>
+                        <h3>Raw Response:</h3>
+                        <pre style="background: #f5f5f5; padding: 10px; overflow-x: auto; white-space: pre-wrap;">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    `;
+                    return;
+                }
+
+                if (data.success) {
+                    output.innerHTML = '<h2>Parks loaded: ' + data.total + '</h2>';
+                    data.data.forEach(park => {
+                        output.innerHTML += `
+                            <div class="park">
+                                <h3>${park.fullName}</h3>
+                                <p>${park.states} - ${park.wildlife}</p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    output.innerHTML = '<p style="color: red;">Failed to load parks</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                output.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        window.onload = loadParks;
+    </script>
+</body>
+
+</html>

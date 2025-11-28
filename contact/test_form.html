@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Contact Form Test</title>
+</head>
+
+<body>
+    <h2>Simple Contact Form Test</h2>
+    <div id="status" style="padding:10px; margin:10px 0; display:none;"></div>
+
+    <form id="testForm">
+        <input type="text" name="name" placeholder="Name" required><br><br>
+        <input type="email" name="email" placeholder="Email" required><br><br>
+        <select name="inquiry">
+            <option value="">Select Type</option>
+            <option>Ticketing</option>
+            <option>General Inquiry</option>
+        </select><br><br>
+        <textarea name="message" placeholder="Message" required></textarea><br><br>
+        <button type="submit">Test Submit</button>
+    </form>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const testForm = document.getElementById('testForm');
+
+        function showStatus(msg, isError = false) {
+            statusDiv.textContent = msg;
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = isError ? '#ffebee' : '#e8f5e9';
+            statusDiv.style.color = isError ? '#c62828' : '#2e7d32';
+        }
+
+        testForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('=== TEST FORM SUBMIT ===');
+
+            const formData = new FormData(testForm);
+            console.log('Form data:', Object.fromEntries(formData));
+
+            try {
+                showStatus('Submitting...', false);
+
+                const response = await fetch('contact_submit.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+
+                const text = await response.text();
+                console.log('Raw response:', text);
+
+                let data;
+                try {
+                    data = JSON.parse(text);
+                    console.log('Parsed JSON:', data);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    showStatus('Server returned invalid JSON: ' + text, true);
+                    return;
+                }
+
+                if (data.success) {
+                    showStatus('✅ SUCCESS: ' + data.message, false);
+                    testForm.reset();
+                } else {
+                    showStatus('❌ ERROR: ' + data.message + (data.debug ? '\nDebug: ' + data.debug : ''), true);
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showStatus('❌ Network error: ' + error.message, true);
+            }
+        });
+    </script>
+</body>
+
+</html>

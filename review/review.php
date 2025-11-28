@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -80,6 +79,7 @@ if (!isset($_SESSION['user_id'])) {
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-size: 2rem;
+            margin-top: 35px;
         }
 
         .reviews-section {
@@ -166,6 +166,168 @@ if (!isset($_SESSION['user_id'])) {
             text-decoration: none;
         }
 
+        /* Review Form Styles */
+        .submit-review-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+        }
+
+        .submit-review-form h3 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .submit-review-form>p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #27ae60;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+
+        .star-rating.small {
+            font-size: 1.5rem;
+            gap: 5px;
+        }
+
+        .star-rating .star {
+            color: #ddd;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .star-rating .star:hover,
+        .star-rating .star.active {
+            color: #ffd700;
+            transform: scale(1.1);
+        }
+
+        .rating-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .category-rating {
+            text-align: center;
+        }
+
+        .category-rating label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .char-count {
+            display: block;
+            margin-top: 5px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .review-card .rating-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+
+        .review-card .rating-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         footer {
             background: white;
             padding: 15px;
@@ -200,6 +362,47 @@ if (!isset($_SESSION['user_id'])) {
             transition: all 0.2s ease;
 
         }
+
+        /* Toast (popup) notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            /* success default */
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: toast-in 0.25s forwards, toast-out 0.3s 3s forwards;
+            font-weight: 600;
+            letter-spacing: .2px;
+        }
+
+        .toast-error {
+            background: #e74c3c;
+        }
+
+        .toast-success {
+            background: #2ecc71;
+        }
+
+        @keyframes toast-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toast-out {
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
     </style>
 </head>
 
@@ -229,27 +432,133 @@ if (!isset($_SESSION['user_id'])) {
                     <option value="">All Parks</option>
                     <option value="Kaziranga">Kaziranga</option>
                     <option value="Jim Corbett">Jim Corbett</option>
+                    <option value="Ranthambore">Ranthambore</option>
+                    <option value="Bandhavgarh">Bandhavgarh</option>
+                    <option value="Kanha">Kanha</option>
+                    <option value="Hemis">Hemis</option>
+                    <option value="Sundarbans">Sundarbans</option>
+                    <option value="Periyar">Periyar</option>
+                    <option value="Gir">Gir</option>
+                    <option value="Valley of Flowers">Valley of Flowers</option>
                 </select>
 
                 <select id="filterRating">
                     <option value="">All Ratings</option>
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars ⭐⭐⭐⭐⭐</option>
+                    <option value="4">4 Stars ⭐⭐⭐⭐</option>
+                    <option value="3">3 Stars ⭐⭐⭐</option>
+                    <option value="2">2 Stars ⭐⭐</option>
+                    <option value="1">1 Star ⭐</option>
                 </select>
 
                 <select id="sortDate">
                     <option value="">Sort By</option>
                     <option value="newest">Newest First</option>
                     <option value="oldest">Oldest First</option>
+                    <option value="rating">Highest Rated</option>
                 </select>
             </div>
 
             <div id="reviewsContainer"></div>
 
-            <div class="submit-review">
-                <h3>Submit Your Review</h3>
-                <p>Share your experience with other travelers. Log in to submit your review.</p>
-                <button><a href="../login/login.php">Log In to review</a></button>
+            <!-- Review Submission Form -->
+            <div class="submit-review-form">
+                <h3>✍️ Submit Your Review</h3>
+                <p>Share your experience with other travelers and help them plan their visit!</p>
+
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="parkSelect">Select National Park *</label>
+                        <select id="parkSelect" name="park_name" required>
+                            <option value="">Choose a park...</option>
+                            <option value="Kaziranga">Kaziranga National Park</option>
+                            <option value="Jim Corbett">Jim Corbett National Park</option>
+                            <option value="Ranthambore">Ranthambore National Park</option>
+                            <option value="Bandhavgarh">Bandhavgarh National Park</option>
+                            <option value="Kanha">Kanha National Park</option>
+                            <option value="Hemis">Hemis National Park</option>
+                            <option value="Sundarbans">Sundarbans National Park</option>
+                            <option value="Periyar">Periyar National Park</option>
+                            <option value="Gir">Gir National Park</option>
+                            <option value="Valley of Flowers">Valley of Flowers National Park</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Overall Rating *</label>
+                        <div class="star-rating" id="overallRating">
+                            <span class="star" data-rating="1">☆</span>
+                            <span class="star" data-rating="2">☆</span>
+                            <span class="star" data-rating="3">☆</span>
+                            <span class="star" data-rating="4">☆</span>
+                            <span class="star" data-rating="5">☆</span>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="rating" required>
+                    </div>
+
+                    <div class="rating-categories">
+                        <div class="category-rating">
+                            <label>🧹 Cleanliness</label>
+                            <div class="star-rating small" data-category="cleanliness">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" name="cleanliness" id="cleanliness" required>
+                        </div>
+
+                        <div class="category-rating">
+                            <label>🛡️ Safety</label>
+                            <div class="star-rating small" data-category="safety">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" name="safety" id="safety" required>
+                        </div>
+
+                        <div class="category-rating">
+                            <label>🏢 Facilities</label>
+                            <div class="star-rating small" data-category="facilities">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" name="facilities" id="facilities" required>
+                        </div>
+
+                        <div class="category-rating">
+                            <label>👨‍🏫 Guide Quality</label>
+                            <div class="star-rating small" data-category="guide_quality">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" name="guide_quality" id="guide_quality" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewText">Your Review *</label>
+                        <textarea id="reviewText" name="review_text" rows="5"
+                            placeholder="Share your experience... What did you like? Any tips for future visitors?"
+                            required minlength="50"></textarea>
+                        <small class="char-count">Minimum 50 characters</small>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Submit Review</span>
+                        <span class="btn-loading" style="display: none;">Submitting...</span>
+                    </button>
+                </form>
             </div>
         </section>
     </main>
@@ -269,140 +578,242 @@ if (!isset($_SESSION['user_id'])) {
 ">© 2025 National Park. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
-</body>
-<script>
-    const reviews = [
-        {
-            name: "Aman Kumar",
-            date: "2025-07-20",
-            rating: 5,
-            text: "An unforgettable experience at the park! The wildlife was abundant, and the guides were incredibly knowledgeable. Highly recommend for any nature enthusiast.",
-            likes: 12,
-            dislikes: 2,
-            avatar: "https://i.pravatar.cc/40?img=54",
-            park: "Kaziranga"
-        },
-        {
-            name: "Ashish Gupta",
-            date: "2025-06-20",
-            rating: 4,
-            text: "The park was beautiful, but the trails could be better marked. Overall, a good experience, but there's room for improvement.",
-            likes: 8,
-            dislikes: 3,
-            avatar: "https://i.pravatar.cc/40?img=13",
-            park: "Jim Corbett"
-        },
-        {
-            name: "Sahil kumar",
-            date: "2025-05-23",
-            rating: 5,
-            text: "Absolutely breathtaking! The park exceeded all expectations. The staff was friendly, and the scenery was stunning. A must-visit!",
-            likes: 15,
-            dislikes: 1,
-            avatar: "https://i.pravatar.cc/40?img=62",
-            park: "Kaziranga"
-        },
-        {
-            name: "js singh",
-            date: "2023-07-15",
-            rating: 4,
-            text: "all good vibes as well as outstanding.really it provide us a virtual national park view",
-            likes: 9,
-            dislikes: 2,
-            avatar: "https://i.pravatar.cc/40?img=24",
-            park: "Hemis"
-        },
-        {
-            name: "misha roy",
-            date: "2023-08-02",
-            rating: 3,
-            text: "although good but it can be more ellobrative. need some exctra space for the wilds also could be better pathway for the visitors ",
-            likes: 14,
-            dislikes: 3,
-            avatar: "https://i.pravatar.cc/40?img=37",
-            park: "Kanha"
-        }
-    ];
+    <script>
+        let allReviews = [];
 
-    const searchBar = document.getElementById("searchBar");
-    const filterPark = document.getElementById("filterPark");
-    const filterRating = document.getElementById("filterRating");
-    const sortDate = document.getElementById("sortDate");
-    const reviewsContainer = document.getElementById("reviewsContainer");
+        // Star rating functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load reviews on page load
+            loadReviews();
 
-    function renderReviews(list) {
-        reviewsContainer.innerHTML = "";
-        list.forEach((r, index) => {
-            const review = document.createElement("div");
-            review.classList.add("review-card");
-            review.innerHTML = `
-      <div class="review-header">
-        <img src="${r.avatar}" alt="${r.name}">
-        <div>
-          <strong>${r.name}</strong><br>
-          <small>${new Date(r.date).toLocaleDateString()}</small>
-        </div>
-      </div>
-      <div class="review-rating">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
-      <p>${r.text}</p>
-      <div class="review-footer">
-        <span onclick="likeReview(${index})">👍 ${r.likes}</span>
-        <span onclick="dislikeReview(${index})">👎 ${r.dislikes}</span>
-      </div>
-    `;
-            reviewsContainer.appendChild(review);
+            // Overall rating
+            const overallStars = document.querySelectorAll('#overallRating .star');
+            overallStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    document.getElementById('ratingValue').value = rating;
+                    updateStars(overallStars, rating);
+                });
+            });
+
+            // Category ratings
+            document.querySelectorAll('.star-rating[data-category]').forEach(ratingGroup => {
+                const category = ratingGroup.getAttribute('data-category');
+                const stars = ratingGroup.querySelectorAll('.star');
+
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const rating = this.getAttribute('data-rating');
+                        document.getElementById(category).value = rating;
+                        updateStars(stars, rating);
+                    });
+                });
+            });
+
+            // Form submission
+            document.getElementById('reviewForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitReview();
+            });
+
+            // Character count
+            document.getElementById('reviewText').addEventListener('input', function() {
+                const count = this.value.length;
+                const charCounter = document.querySelector('.char-count');
+                if (count < 50) {
+                    charCounter.textContent = `${count}/50 characters (minimum)`;
+                    charCounter.style.color = '#e74c3c';
+                } else {
+                    charCounter.textContent = `${count} characters ✓`;
+                    charCounter.style.color = '#27ae60';
+                }
+            });
         });
-    }
 
-    function applyFilters() {
-        let filtered = [...reviews];
-
-        const searchTerm = searchBar.value.toLowerCase();
-        if (searchTerm) {
-            filtered = filtered.filter(r =>
-                r.text.toLowerCase().includes(searchTerm) ||
-                r.name.toLowerCase().includes(searchTerm) ||
-                r.park.toLowerCase().includes(searchTerm)
-            );
+        function updateStars(stars, rating) {
+            stars.forEach(star => {
+                const starRating = star.getAttribute('data-rating');
+                if (starRating <= rating) {
+                    star.textContent = '★';
+                    star.classList.add('active');
+                } else {
+                    star.textContent = '☆';
+                    star.classList.remove('active');
+                }
+            });
         }
 
-        if (filterPark.value) {
-            filtered = filtered.filter(r => r.park === filterPark.value);
+        // Load reviews from database
+        function loadReviews() {
+            const params = new URLSearchParams({
+                park: document.getElementById('filterPark').value,
+                rating: document.getElementById('filterRating').value,
+                sort: document.getElementById('sortDate').value,
+                search: document.getElementById('searchBar').value
+            });
+
+            fetch(`get_reviews.php?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allReviews = data.reviews;
+                        renderReviews(allReviews);
+                    }
+                })
+                .catch(error => console.error('Error loading reviews:', error));
         }
 
-        if (filterRating.value) {
-            filtered = filtered.filter(r => r.rating === parseInt(filterRating.value));
+        // Submit review
+        function submitReview() {
+            const form = document.getElementById('reviewForm');
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('.submit-btn');
+
+            // Validation
+            if (!formData.get('rating')) {
+                showAlert('Please provide an overall rating', 'error');
+                return;
+            }
+
+            const categories = ['cleanliness', 'safety', 'facilities', 'guide_quality'];
+            for (let cat of categories) {
+                if (!formData.get(cat)) {
+                    showAlert('Please rate all categories', 'error');
+                    return;
+                }
+            }
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-text').style.display = 'none';
+            submitBtn.querySelector('.btn-loading').style.display = 'inline';
+
+            fetch('submit_review.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast(data.message || 'Review submitted successfully!', 'success');
+                        form.reset();
+                        // Reset all stars
+                        document.querySelectorAll('.star').forEach(star => {
+                            star.textContent = '☆';
+                            star.classList.remove('active');
+                        });
+                        document.querySelector('.char-count').textContent = 'Minimum 50 characters';
+                        document.querySelector('.char-count').style.color = '#888';
+
+                        // Reload reviews
+                        loadReviews();
+
+                        // Scroll to top of reviews
+                        document.getElementById('reviewsContainer').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        showToast(data.message || 'Could not submit review', 'error');
+                    }
+                })
+                .catch(error => {
+                    showToast('Error submitting review. Please try again.', 'error');
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.querySelector('.btn-text').style.display = 'inline';
+                    submitBtn.querySelector('.btn-loading').style.display = 'none';
+                });
         }
 
-        if (sortDate.value === "newest") {
-            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-        } else if (sortDate.value === "oldest") {
-            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        // Render reviews
+        function renderReviews(reviews) {
+            const container = document.getElementById('reviewsContainer');
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No reviews found. Be the first to share your experience!</div>';
+                return;
+            }
+
+            container.innerHTML = reviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="${r.avatar}" alt="${r.name}" onerror="this.src='https://i.pravatar.cc/40?img=1'">
+                        <div>
+                            <strong>${r.name}</strong><br>
+                            <small>${new Date(r.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</small>
+                            <br><small style="color: #27ae60; font-weight: 600;">📍 ${r.park}</small>
+                        </div>
+                    </div>
+                    <div class="review-rating">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+                    <div class="rating-details">
+                        <span>🧹 Cleanliness: ${"★".repeat(r.cleanliness)}</span>
+                        <span>🛡️ Safety: ${"★".repeat(r.safety)}</span>
+                        <span>🏢 Facilities: ${"★".repeat(r.facilities)}</span>
+                        <span>👨‍🏫 Guide: ${"★".repeat(r.guide_quality)}</span>
+                    </div>
+                    <p>${r.text}</p>
+                    <div class="review-footer">
+                        <span onclick="reactToReview(${r.id}, 'like', this)">👍 ${r.likes}</span>
+                        <span onclick="reactToReview(${r.id}, 'dislike', this)">👎 ${r.dislikes}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        renderReviews(filtered);
-    }
+        // React to review (like/dislike)
+        function reactToReview(reviewId, action, element) {
+            fetch('update_reaction.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `review_id=${reviewId}&action=${action}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const footer = element.parentElement;
+                        const spans = footer.querySelectorAll('span');
+                        spans[0].innerHTML = `👍 ${data.likes}`;
+                        spans[1].innerHTML = `👎 ${data.dislikes}`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-    function likeReview(index) {
-        reviews[index].likes++;
-        applyFilters();
-    }
+        // Toast (popup) message utility
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type === 'error' ? 'error' : 'success'}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            // Remove after animation completes
+            setTimeout(() => {
+                toast.remove();
+            }, 3400);
+        }
 
-    function dislikeReview(index) {
-        reviews[index].dislikes++;
-        applyFilters();
-    }
+        // Show alert message
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
 
-    // Event listeners
-    searchBar.addEventListener("input", applyFilters);
-    filterPark.addEventListener("change", applyFilters);
-    filterRating.addEventListener("change", applyFilters);
-    sortDate.addEventListener("change", applyFilters);
+            const form = document.getElementById('reviewForm');
+            form.insertBefore(alertDiv, form.firstChild);
 
-    // Initial render
-    renderReviews(reviews);
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
 
-</script>
+        // Filter and search functionality
+        document.getElementById('searchBar').addEventListener('input', loadReviews);
+        document.getElementById('filterPark').addEventListener('change', loadReviews);
+        document.getElementById('filterRating').addEventListener('change', loadReviews);
+        document.getElementById('sortDate').addEventListener('change', loadReviews);
+    </script>
 
 </html>

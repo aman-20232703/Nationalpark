@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Test</title>
+</head>
+
+<body>
+    <h1>Quick Fetch Test</h1>
+    <div id="result">Testing...</div>
+
+    <script>
+        async function test() {
+            const result = document.getElementById('result');
+            try {
+                console.log('Fetching from ../parks_api_proxy.php');
+                const response = await fetch('../parks_api_proxy.php');
+                console.log('Status:', response.status);
+
+                const text = await response.text();
+                console.log('Response length:', text.length);
+                console.log('First 200 chars:', text.substring(0, 200));
+
+                const data = JSON.parse(text);
+                result.innerHTML = `
+                    <p style="color: green;">✓ Success!</p>
+                    <p>Total parks: ${data.total}</p>
+                    <p>First park: ${data.data[0].fullName}</p>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                result.innerHTML = `<p style="color: red;">✗ Error: ${error.message}</p>`;
+            }
+        }
+
+        test();
+    </script>
+</body>
+
+</html>

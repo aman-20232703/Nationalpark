@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -18,6 +17,51 @@ if (!isset($_SESSION['user_id'])) {
     <title>Wild Trails - Contact Us</title>
     <link rel="stylesheet" href="contact.css">
     <script src="contact.js"></script>
+    <style>
+        /* Toast Popup Notification */
+        .toast {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            min-width: 300px;
+            background: #2ecc71;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .toast.success {
+            background: #2ecc71;
+        }
+
+        .toast::before {
+            content: '✓';
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .toast.error::before {
+            content: '✕';
+        }
+    </style>
     <!-- <style>
         body {
             font-family: Arial, sans-serif;
@@ -227,23 +271,28 @@ if (!isset($_SESSION['user_id'])) {
         <p>We're here to help you plan your visit to India's National Parks. Reach out with your queries, assistance
             requests, or suggestions.</p>
 
+        <div id="contactBanner" style="display:none; background:#eafaf1; color:#1a472a; border:1px solid #c6f3d9; padding:10px 12px; border-radius:8px; margin-bottom:12px; font-weight:600;">Queries replied back soon.</div>
+
         <form id="contactForm">
-            <input type="text" id="name" placeholder="Enter your name" required>
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <select id="inquiry">
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <select id="inquiry" name="inquiry">
                 <option value="">Select Inquiry Type</option>
                 <option>Ticketing</option>
                 <option>Guided Tours</option>
                 <option>Wildlife Emergencies</option>
                 <option>General Inquiry</option>
             </select>
-            <textarea id="message" rows="5" placeholder="Enter your message" required></textarea>
+            <textarea id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
             <button type="submit">Submit</button>
         </form>
 
         <!-- Additional Support -->
         <div class="support">
             <h2>Additional Support</h2>
+            <div class="support-card" style="background: #fff3cd; border: 2px solid #ffc107;">
+                <strong>🔧 Admin:</strong> <a href="view_contacts.php" style="color: #1a472a; font-weight: bold; text-decoration: underline;">Manage Contact Queries & Reply to Users</a>
+            </div>
             <div class="support-card">📞 <span>Wildlife Emergency Helpline</span> - Available 24/7</div>
             <div class="support-card">📞 <span>Forest Department Helpline</span> - Mon-Fri, 9 AM - 6 PM</div>
             <div class="support-card">📧 <span>Email Us:</span> support@NationalPark.com</div>
@@ -282,14 +331,119 @@ if (!isset($_SESSION['user_id'])) {
     </footer>
 
     <!-- JavaScript -->
-    <!-- <script>
-        const form = document.getElementById("contactForm");
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Thank you! Your message has been submitted successfully.");
-            form.reset();
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            // Remove any existing toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Show toast with animation
+            setTimeout(() => toast.classList.add('show'), 100);
+
+            // Hide and remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 5000);
+
+            console.log(`Toast shown: ${message} (${type})`);
+        }
+
+        // Also show banner
+        function showBanner(msg, isError = false) {
+            const b = document.getElementById('contactBanner');
+            b.textContent = msg;
+            b.style.display = 'block';
+            b.style.background = isError ? '#ffebee' : '#eafaf1';
+            b.style.color = isError ? '#c62828' : '#1a472a';
+            b.style.border = isError ? '1px solid #ef9a9a' : '1px solid #c6f3d9';
+
+            setTimeout(() => {
+                b.style.display = 'none';
+            }, 5000);
+        }
+
+        // Form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('=== CONTACT FORM SUBMISSION ===');
+
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.style.opacity = '0.6';
+
+                const fd = new FormData(form);
+                console.log('Form data:', Object.fromEntries(fd));
+
+                try {
+                    const response = await fetch('contact_submit.php', {
+                        method: 'POST',
+                        body: fd
+                    });
+
+                    console.log('Response status:', response.status);
+                    console.log('Content-Type:', response.headers.get('content-type'));
+
+                    const rawText = await response.text();
+                    console.log('Raw response:', rawText);
+
+                    let data;
+                    try {
+                        data = JSON.parse(rawText);
+                        console.log('Parsed JSON:', data);
+                    } catch (parseError) {
+                        console.error('JSON Parse Error:', parseError);
+                        console.error('Raw text was:', rawText);
+                        showToast('Server error: Invalid response', 'error');
+                        showBanner('Server returned invalid response. Check console.', true);
+                        return;
+                    }
+
+                    if (data.success) {
+                        showToast(data.message || 'Queries replied back soon!', 'success');
+                        showBanner(data.message || 'Queries replied back soon.', false);
+                        form.reset();
+                        console.log('✅ Form submitted successfully');
+                    } else {
+                        showToast(data.message || 'Failed to submit query', 'error');
+                        showBanner(data.message || 'Could not submit your query.', true);
+
+                        if (data.debug) {
+                            console.error('Debug info:', data.debug);
+                        }
+                        if (data.sql) {
+                            console.error('SQL:', data.sql);
+                        }
+                    }
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    showToast('Network error. Please try again.', 'error');
+                    showBanner('Network error. Please check your connection.', true);
+                } finally {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit';
+                    submitBtn.style.opacity = '1';
+                }
+            });
+
+            console.log('✅ Contact form script loaded and ready');
         });
-    </script> -->
+    </script>
 
 </body>
 

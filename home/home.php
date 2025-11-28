@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 $id = $_SESSION['user_id'];
 $sql = "select profile_image from users where id = '$id'";
-$res = mysqli_query($conn,$sql);
+$res = mysqli_query($conn, $sql);
 // while(mysqli_num_rows($res)>0){
 //     $d = mysqli_fetch_assoc($res);
 // }
@@ -37,9 +37,8 @@ $d = mysqli_fetch_assoc($res);
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            aspect-ratio: 16/9;
             overflow-x: hidden;
-
+            min-height: 100vh;
         }
 
         .park-card:nth-child(11) {
@@ -47,7 +46,8 @@ $d = mysqli_fetch_assoc($res);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -95,12 +95,27 @@ $d = mysqli_fetch_assoc($res);
         }
 
         .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile a {
+            display: block;
+            width: 50px;
+            height: 50px;
+        }
+
+        .user-profile img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-image: url('<?= '../uploads/'. $d['profile_image'] ?> ');
-            background-size: cover;
-            text-decoration: none;
+            object-fit: cover;
+            border: 2px solid #2d5016;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile img:hover {
+            transform: scale(1.05);
         }
 
         /* Hero Section */
@@ -199,14 +214,18 @@ $d = mysqli_fetch_assoc($res);
         /* Map Section */
         .map-container {
             background: #f0f8f0;
-            padding: 1rem;
+            padding: 2rem;
             border-radius: 10px;
-            text-align: left;
-            margin: 1rem 0;
+            text-align: center;
+            margin: 2rem 0;
         }
 
         .map-container .map {
             width: 100%;
+            max-width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            border: none;
         }
 
         /* Statistics */
@@ -239,31 +258,36 @@ $d = mysqli_fetch_assoc($res);
 
         /* Testimonials */
         .testimonials {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
             margin: 2rem 0;
+            background: #efebeb;
+            padding: 2rem;
+            border-radius: 10px;
         }
 
-        .testimonials {
+        .testimonial {
             display: flex;
-            justify-content: space-evenly;
-            background: #efebeb;
-            padding: 1rem;
-            border-radius: 10px;
-            width: 100%;
-            height: 360px;
-            gap: 3px;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
         .testimonial img {
             width: 100%;
+            max-width: 400px;
             height: 300px;
-            border-radius: 5px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .testimonials h4 {
+        .testimonial h4 {
             text-align: center;
-            font-size: 20px;
+            font-size: 1.3rem;
+            color: #2d5016;
+            margin: 0;
         }
 
         .testimonial-text {
@@ -344,7 +368,6 @@ $d = mysqli_fetch_assoc($res);
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
-
             }
 
             .hero-content h1 {
@@ -355,17 +378,30 @@ $d = mysqli_fetch_assoc($res);
                 font-size: 1rem;
             }
 
+            .overlay h1 {
+                font-size: 2rem;
+            }
+
+            .overlay p {
+                font-size: 1rem;
+            }
+
             .stats {
                 grid-template-columns: 1fr;
             }
 
             .testimonials {
                 grid-template-columns: 1fr;
+                padding: 1rem;
             }
 
             .footer-links {
                 flex-direction: column;
                 gap: 1rem;
+            }
+
+            .map-container .map {
+                height: 350px;
             }
         }
     </style>
@@ -385,7 +421,7 @@ $d = mysqli_fetch_assoc($res);
             </ul>
             <div class="user-profile">
                 <a href="../profile/profile.php">
-                    <img src="<?= '../uploads/'. $d['profile_image'] ?>" class="profile-img">
+                    <img src="<?= '../uploads/' . $d['profile_image'] ?>" alt="Profile">
                 </a>
             </div>
         </nav>
